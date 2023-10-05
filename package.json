@@ -1,0 +1,25 @@
+{
+  "name": "retink",
+  "version": "1.0.0",
+  "description": "A mini project for Retink",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/EnesDemirtas/Retink.git"
+  },
+  "keywords": [
+    "blog",
+    "author",
+    "comment",
+    "forum"
+  ],
+  "author": "Enes Demirtaş",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/EnesDemirtas/Retink/issues"
+  },
+  "homepage": "https://github.com/EnesDemirtas/Retink#readme"
+}
