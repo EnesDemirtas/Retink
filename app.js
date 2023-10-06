@@ -20,4 +20,7 @@ app.use("/authors", authorsRouter);
 const usersRouter = require("./routes/users");
 app.use("/users", usersRouter);
 
+const commentsRouter = require("./routes/comments");
+app.use("/comments", commentsRouter);
+
 app.listen(3000, () => console.log("Server started on port 3000"));
