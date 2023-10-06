@@ -11,4 +11,7 @@ db.once("open", () => console.log("Connected to Database"));
 
 app.use(express.json());
 
+const blogsRouter = require("./routes/blogs");
+app.use("/blogs", blogsRouter);
+
 app.listen(3000, () => console.log("Server started on port 3000"));
