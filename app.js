@@ -14,4 +14,7 @@ app.use(express.json());
 const blogsRouter = require("./routes/blogs");
 app.use("/blogs", blogsRouter);
 
+const authorsRouter = require("./routes/authors");
+app.use("/authors", authorsRouter);
+
 app.listen(3000, () => console.log("Server started on port 3000"));
