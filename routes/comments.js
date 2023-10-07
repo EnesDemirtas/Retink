@@ -1,3 +1,136 @@
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     Comment:
+ *       type: object
+ *       required:
+ *         - blog
+ *         - comment
+ *         - user
+ *       properties:
+ *         _id:
+ *           type: ObjectId
+ *           description: The auto-generated id of the comment
+ *         blog:
+ *           type: ObjectId
+ *           ref: Blog
+ *           description: The blog which the comment belongs to
+ *         comment:
+ *           type: string
+ *           description: The content of the comment
+ *         user:
+ *           type: ObjectId
+ *           ref: User
+ *           description: The user which the comment belongs to
+ *       example:
+ *         _id: 652166667828332c4baf5d6a
+ *         blog: 652166667828332c4baf5d6a
+ *         comment: This is my first comment.
+ *         user: 652166667828332c4baf5d6a
+ */
+
+/**
+ * @swagger
+ * tags:
+ *   name: Comments
+ *   description: API to manage your comments
+ * /comments:
+ *   get:
+ *     summary: Lists all the comments
+ *     tags: [Comments]
+ *     responses:
+ *       200:
+ *         description: The list of the comments
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Comment'
+ *   post:
+ *     summary: Create a new comment
+ *     tags: [Comments]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Comment'
+ *     responses:
+ *       200:
+ *         description: The created comment.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Comment'
+ *       500:
+ *         description: Some server error
+ * /comments/{id}:
+ *   get:
+ *     summary: Get the comment by id
+ *     tags: [Comments]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: The comment id
+ *     responses:
+ *       200:
+ *         description: The comment response by id
+ *         contens:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Comment'
+ *       404:
+ *         description: The comment was not found
+ *   patch:
+ *    summary: Update the comment by the id
+ *    tags: [Comments]
+ *    parameters:
+ *      - in: path
+ *        name: id
+ *        schema:
+ *          type: string
+ *        required: true
+ *        description: The comment id
+ *    requestBody:
+ *      required: true
+ *      content:
+ *        application/json:
+ *          schema:
+ *            $ref: '#/components/schemas/Comment'
+ *    responses:
+ *      200:
+ *        description: The comment was updated
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/Comment'
+ *      404:
+ *        description: The comment was not found
+ *      500:
+ *        description: Some error happened
+ *   delete:
+ *     summary: Remove the comment by id
+ *     tags: [Comments]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: The comment id
+ *
+ *     responses:
+ *       200:
+ *         description: The comment was deleted
+ *       404:
+ *         description: The comment was not found
+ */
+
 const express = require("express");
 const router = express.Router();
 const Comment = require("../models/comment");

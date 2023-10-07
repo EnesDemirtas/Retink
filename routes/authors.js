@@ -1,3 +1,135 @@
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     Author:
+ *       type: object
+ *       required:
+ *         - full_name
+ *         - email
+ *       properties:
+ *         _id:
+ *           type: ObjectId
+ *           description: The auto-generated id of the author
+ *         full_name:
+ *           type: string
+ *           description: The author's full name
+ *         email:
+ *           type: string
+ *           description: The author's email address
+ *         blogs:
+ *           type: array
+ *           items:
+ *             $ref: '#/components/schemas/Blog'
+ *           description: The blogs of the author
+ *       example:
+ *         _id: 652166667828332c4baf5d6a
+ *         full_name: John Doe
+ *         email: johndoe@gmail.com
+ *         blogs: ["652166667828332c4baf5d6a"]
+ */
+
+/**
+ * @swagger
+ * tags:
+ *   name: Authors
+ *   description: API to manage your authors
+ * /authors:
+ *   get:
+ *     summary: Lists all the authors
+ *     tags: [Authors]
+ *     responses:
+ *       200:
+ *         description: The list of the authors
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Author'
+ *   post:
+ *     summary: Create a new author
+ *     tags: [Authors]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Author'
+ *     responses:
+ *       200:
+ *         description: The created author.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Author'
+ *       500:
+ *         description: Some server error
+ * /authors/{id}:
+ *   get:
+ *     summary: Get the author by id
+ *     tags: [Authors]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: The author id
+ *     responses:
+ *       200:
+ *         description: The author response by id
+ *         contens:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Author'
+ *       404:
+ *         description: The author was not found
+ *   patch:
+ *    summary: Update the author by the id
+ *    tags: [Authors]
+ *    parameters:
+ *      - in: path
+ *        name: id
+ *        schema:
+ *          type: string
+ *        required: true
+ *        description: The author id
+ *    requestBody:
+ *      required: true
+ *      content:
+ *        application/json:
+ *          schema:
+ *            $ref: '#/components/schemas/Author'
+ *    responses:
+ *      200:
+ *        description: The author was updated
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/Author'
+ *      404:
+ *        description: The author was not found
+ *      500:
+ *        description: Some error happened
+ *   delete:
+ *     summary: Remove the author by id
+ *     tags: [Authors]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: The author id
+ *
+ *     responses:
+ *       200:
+ *         description: The author was deleted
+ *       404:
+ *         description: The author was not found
+ */
+
 const express = require("express");
 const router = express.Router();
 const Author = require("../models/author");

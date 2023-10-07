@@ -1,3 +1,140 @@
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     Blog:
+ *       type: object
+ *       required:
+ *         - title
+ *         - content
+ *         - author
+ *       properties:
+ *         _id:
+ *           type: ObjectId
+ *           description: The auto-generated id of the blog
+ *         title:
+ *           type: string
+ *           description: The blog title
+ *         content:
+ *           type: string
+ *           description: The blog content
+ *         author:
+ *           type: ObjectId
+ *           ref: Author
+ *           description: The author id of the blog
+ *         comments:
+ *          type: array
+ *          ref: Comment
+ *          description: The comments of the blog
+ *       example:
+ *         _id: 652166667828332c4baf5d6a
+ *         title: My First Blog
+ *         content: This is my first blog.
+ *         author: 652166667828332c4baf5d6a
+ *         comments: ["652166667828332c4baf5d6a"]
+ */
+
+/**
+ * @swagger
+ * tags:
+ *   name: Blogs
+ *   description: API to manage your blogs
+ * /blogs:
+ *   get:
+ *     summary: Lists all the blogs
+ *     tags: [Blogs]
+ *     responses:
+ *       200:
+ *         description: The list of the blogs
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Blog'
+ *   post:
+ *     summary: Create a new blog
+ *     tags: [Blogs]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Blog'
+ *     responses:
+ *       200:
+ *         description: The created blog.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Blog'
+ *       500:
+ *         description: Some server error
+ * /blogs/{id}:
+ *   get:
+ *     summary: Get the blog by id
+ *     tags: [Blogs]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: The blog id
+ *     responses:
+ *       200:
+ *         description: The blog response by id
+ *         contens:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Blog'
+ *       404:
+ *         description: The blog was not found
+ *   patch:
+ *    summary: Update the blog by the id
+ *    tags: [Blogs]
+ *    parameters:
+ *      - in: path
+ *        name: id
+ *        schema:
+ *          type: string
+ *        required: true
+ *        description: The blog id
+ *    requestBody:
+ *      required: true
+ *      content:
+ *        application/json:
+ *          schema:
+ *            $ref: '#/components/schemas/Blog'
+ *    responses:
+ *      200:
+ *        description: The blog was updated
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/Blog'
+ *      404:
+ *        description: The blog was not found
+ *      500:
+ *        description: Some error happened
+ *   delete:
+ *     summary: Remove the blog by id
+ *     tags: [Blogs]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: The blog id
+ *
+ *     responses:
+ *       200:
+ *         description: The blog was deleted
+ *       404:
+ *         description: The blog was not found
+ */
+
 const express = require("express");
 const router = express.Router();
 const Blog = require("../models/blog");

@@ -1,3 +1,134 @@
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     User:
+ *       type: object
+ *       required:
+ *         - full_name
+ *         - email
+ *       properties:
+ *         _id:
+ *           type: ObjectId
+ *           description: The auto-generated id of the user
+ *         full_name:
+ *           type: string
+ *           description: The user's full name
+ *         email:
+ *           type: string
+ *           description: The user's email address
+ *         comments:
+ *           type: array
+ *           ref: Comment
+ *           description: The comments of the user
+ *       example:
+ *         _id: 652166667828332c4baf5d6a
+ *         full_name: John Doe
+ *         email: johndoe@gmail.com
+ *         comments: ["652166667828332c4baf5d6a"]
+ */
+
+/**
+ * @swagger
+ * tags:
+ *   name: Users
+ *   description: API to manage your Users
+ * /Users:
+ *   get:
+ *     summary: Lists all the Users
+ *     tags: [Users]
+ *     responses:
+ *       200:
+ *         description: The list of the Users
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/User'
+ *   post:
+ *     summary: Create a new User
+ *     tags: [Users]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/User'
+ *     responses:
+ *       200:
+ *         description: The created User.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/User'
+ *       500:
+ *         description: Some server error
+ * /Users/{id}:
+ *   get:
+ *     summary: Get the User by id
+ *     tags: [Users]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: The User id
+ *     responses:
+ *       200:
+ *         description: The User response by id
+ *         contens:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/User'
+ *       404:
+ *         description: The User was not found
+ *   patch:
+ *    summary: Update the User by the id
+ *    tags: [Users]
+ *    parameters:
+ *      - in: path
+ *        name: id
+ *        schema:
+ *          type: string
+ *        required: true
+ *        description: The User id
+ *    requestBody:
+ *      required: true
+ *      content:
+ *        application/json:
+ *          schema:
+ *            $ref: '#/components/schemas/User'
+ *    responses:
+ *      200:
+ *        description: The User was updated
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/User'
+ *      404:
+ *        description: The User was not found
+ *      500:
+ *        description: Some error happened
+ *   delete:
+ *     summary: Remove the User by id
+ *     tags: [Users]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: The user id
+ *
+ *     responses:
+ *       200:
+ *         description: The user was deleted
+ *       404:
+ *         description: The user was not found
+ */
+
 const express = require("express");
 const router = express.Router();
 const User = require("../models/user");
