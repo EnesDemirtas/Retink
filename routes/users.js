@@ -53,7 +53,7 @@ router.patch("/:id", getUserById, async (req, res) => {
 router.delete("/:id", getUserById, async (req, res) => {
   try {
     await res.user.deleteOne();
-    res.json({ message: "User deleted" });
+    res.json({ message: "User has been deleted" });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
@@ -65,7 +65,7 @@ async function getUserById(req, res, next) {
   try {
     user = await User.findById(req.params.id).exec();
     if (user == null) {
-      return res.status(404).json({ message: "Cannot find user" });
+      return res.status(404).json({ message: "Cannot find the user" });
     }
   } catch (err) {
     return res.status(500).json({ message: err.message });
