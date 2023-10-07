@@ -2,6 +2,8 @@ const express = require("express");
 const router = express.Router();
 const Blog = require("../models/blog");
 
+const Author = require("../models/author");
+
 // Get all blogs
 router.get("/", async (req, res) => {
   try {
@@ -26,7 +28,15 @@ router.post("/", async (req, res) => {
   });
 
   try {
+    const author = await Author.findOne({ _id: req.body.author }).exec();
+    if (!author) {
+      return res.status(404).json({ message: "Author not found" });
+    }
+    author.blogs.push(blog._id);
+
     const newBlog = await blog.save();
+    await author.save();
+
     res.status(201).json(newBlog);
   } catch (err) {
     res.status(400).json({ message: err.message });
@@ -41,9 +51,6 @@ router.patch("/:id", getBlogById, async (req, res) => {
   if (req.body.content != null) {
     res.blog.content = req.body.content;
   }
-  if (req.body.author != null) {
-    res.blog.author = req.body.author;
-  }
 
   try {
     const updatedBlog = await res.blog.save();
@@ -57,7 +64,7 @@ router.patch("/:id", getBlogById, async (req, res) => {
 router.delete("/:id", getBlogById, async (req, res) => {
   try {
     await res.blog.deleteOne();
-    res.json({ message: "Deleted blog" });
+    res.json({ message: "Blog has been deleted." });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }

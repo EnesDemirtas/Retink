@@ -21,4 +21,19 @@ const blogSchema = new mongoose.Schema({
   ],
 });
 
+blogSchema.pre("remove", async function (next) {
+  const Comment = require("./comment");
+  const Author = require("./author");
+
+  try {
+    await Comment.deleteMany({ blog: this._id }).exec();
+    await Author.findByIdAndUpdate(this.author, {
+      $pull: { blogs: this._id },
+    }).exec();
+    next();
+  } catch (err) {
+    next(err);
+  }
+});
+
 module.exports = mongoose.model("Blog", blogSchema);
