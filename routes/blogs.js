@@ -28,7 +28,7 @@ router.post("/", async (req, res) => {
   });
 
   try {
-    const author = await Author.findOne({ _id: req.body.author }).exec();
+    const author = await Author.findById({ _id: req.body.author }).exec();
     if (!author) {
       return res.status(404).json({ message: "Author not found" });
     }
