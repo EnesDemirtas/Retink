@@ -1,6 +1,7 @@
 require("dotenv").config();
 
 const express = require("express");
+const cors = require("cors");
 const app = express();
 const PORT = process.env.PORT || 3030;
 const mongoose = require("mongoose");
@@ -27,11 +28,6 @@ const options = {
         email: "enesdemirtas255@gmail.com",
       },
     },
-    servers: [
-      {
-        url: "http://localhost:3000",
-      },
-    ],
   },
   apis: ["./routes/*.js"],
 };
@@ -40,6 +36,15 @@ const specs = swaggerJsdoc(options);
 app.use("/swagger", swaggerUi.serve, swaggerUi.setup(specs));
 
 // End Swagger
+
+app.use(
+  cors({
+    origin: "https://retink-usecase.onrender.com",
+    headers: ["Content-Type"],
+    credentials: true,
+  })
+);
+app.options("*", cors());
 
 mongoose.connect(process.env.DB_CONNECTION_STRING, { useNewUrlParser: true });
 const db = mongoose.connection;
