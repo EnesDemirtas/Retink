@@ -21,7 +21,7 @@ const blogSchema = new mongoose.Schema({
   ],
 });
 
-blogSchema.pre("remove", async function (next) {
+blogSchema.post("remove", async function (next) {
   const Comment = require("./comment");
   const Author = require("./author");
 

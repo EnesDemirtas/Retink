@@ -75,7 +75,7 @@ async function getBlogById(req, res, next) {
   try {
     blog = await Blog.findById(req.params.id).exec();
     if (blog == null) {
-      return res.status(404).json({ message: "Cannot find blog" });
+      return res.status(404).json({ message: "Cannot find the blog" });
     }
   } catch (err) {
     return res.status(500).json({ message: err.message });
