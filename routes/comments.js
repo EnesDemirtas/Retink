@@ -2,6 +2,9 @@ const express = require("express");
 const router = express.Router();
 const Comment = require("../models/comment");
 
+const Blog = require("../models/blog");
+const User = require("../models/user");
+
 // Get all comments
 router.get("/", async (req, res) => {
   try {
@@ -26,7 +29,23 @@ router.post("/", async (req, res) => {
   });
 
   try {
+    const blog = await Blog.findById(req.body.blog).exec();
+    if (!blog) {
+      return res.status(404).json({ message: "Blog not found" });
+    }
+
+    const user = await User.findById(req.body.user).exec();
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    blog.comments.push(comment._id);
+    user.comments.push(comment._id);
+
     const newComment = await comment.save();
+    await blog.save();
+    await user.save();
+
     res.status(201).json(newComment);
   } catch (err) {
     res.status(400).json({ message: err.message });
