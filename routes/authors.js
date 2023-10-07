@@ -53,7 +53,7 @@ router.patch("/:id", getAuthorById, async (req, res) => {
 router.delete("/:id", getAuthorById, async (req, res) => {
   try {
     await res.author.deleteOne();
-    res.json({ message: "Author deleted" });
+    res.json({ message: "Author has been deleted" });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
@@ -65,7 +65,7 @@ async function getAuthorById(req, res, next) {
   try {
     author = await Author.findById(req.params.id).exec();
     if (author == null) {
-      return res.status(404).json({ message: "Cannot find author" });
+      return res.status(404).json({ message: "Cannot find the author" });
     }
   } catch (err) {
     return res.status(500).json({ message: err.message });
