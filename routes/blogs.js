@@ -138,8 +138,11 @@
 const express = require("express");
 const router = express.Router();
 const Blog = require("../models/blog");
-
 const Author = require("../models/author");
+const {
+  createValidation,
+  updateValidation,
+} = require("../validations/blogValidations");
 
 // Get all blogs
 router.get("/", async (req, res) => {
@@ -157,7 +160,12 @@ router.get("/:id", getBlogById, (req, res) => {
 });
 
 // Create a blog
-router.post("/", async (req, res) => {
+router.post("/", createValidation, async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+
   const blog = new Blog({
     title: req.body.title,
     content: req.body.content,
@@ -181,7 +189,12 @@ router.post("/", async (req, res) => {
 });
 
 // Update a blog
-router.patch("/:id", getBlogById, async (req, res) => {
+router.patch("/:id", getBlogById, updateValidation, async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+
   if (req.body.title != null) {
     res.blog.title = req.body.title;
   }

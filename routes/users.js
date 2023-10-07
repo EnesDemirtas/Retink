@@ -132,6 +132,10 @@
 const express = require("express");
 const router = express.Router();
 const User = require("../models/user");
+const {
+  createValidation,
+  updateValidation,
+} = require("../validations/userValidations");
 
 // Get all users
 router.get("/", async (req, res) => {
@@ -149,7 +153,12 @@ router.get("/:id", getUserById, (req, res) => {
 });
 
 // Create a user
-router.post("/", async (req, res) => {
+router.post("/", createValidation, async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+
   const user = new User({
     full_name: req.body.full_name,
     email: req.body.email,
@@ -164,7 +173,12 @@ router.post("/", async (req, res) => {
 });
 
 // Update a user
-router.patch("/:id", getUserById, async (req, res) => {
+router.patch("/:id", getUserById, updateValidation, async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+
   if (req.body.full_name != null) {
     res.user.full_name = req.body.full_name;
   }

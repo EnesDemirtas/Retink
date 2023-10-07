@@ -133,6 +133,10 @@
 const express = require("express");
 const router = express.Router();
 const Author = require("../models/author");
+const {
+  createValidation,
+  updateValidation,
+} = require("../validations/authorValidations");
 
 // Get all authors
 router.get("/", async (req, res) => {
@@ -150,7 +154,12 @@ router.get("/:id", getAuthorById, (req, res) => {
 });
 
 // Create an author
-router.post("/", async (req, res) => {
+router.post("/", createValidation, async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+
   const author = new Author({
     full_name: req.body.full_name,
     email: req.body.email,
@@ -165,7 +174,12 @@ router.post("/", async (req, res) => {
 });
 
 // Update an author
-router.patch("/:id", getAuthorById, async (req, res) => {
+router.patch("/:id", getAuthorById, updateValidation, async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+
   if (req.body.full_name != null) {
     res.author.full_name = req.body.full_name;
   }

@@ -134,9 +134,12 @@
 const express = require("express");
 const router = express.Router();
 const Comment = require("../models/comment");
-
 const Blog = require("../models/blog");
 const User = require("../models/user");
+const {
+  createValidation,
+  updateValidation,
+} = require("../validations/commentValidations");
 
 // Get all comments
 router.get("/", async (req, res) => {
@@ -154,7 +157,12 @@ router.get("/:id", getCommentById, (req, res) => {
 });
 
 // Create a comment
-router.post("/", async (req, res) => {
+router.post("/", createValidation, async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+
   const comment = new Comment({
     blog: req.body.blog,
     comment: req.body.comment,
@@ -186,7 +194,12 @@ router.post("/", async (req, res) => {
 });
 
 // Update a comment
-router.patch("/:id", getCommentById, async (req, res) => {
+router.patch("/:id", getCommentById, updateValidation, async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+
   if (req.body.content != null) {
     res.comment.content = req.body.content;
   }
