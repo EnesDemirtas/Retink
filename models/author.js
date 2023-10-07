@@ -17,15 +17,19 @@ const authorSchema = new mongoose.Schema({
   ],
 });
 
-authorSchema.post("remove", async function (next) {
-  const Blog = require("./blog");
+authorSchema.post(
+  "deleteOne",
+  { document: true, query: false },
+  async function (doc, next) {
+    const Blog = require("./blog");
 
-  try {
-    await Blog.deleteMany({ author: this._id }).exec();
-    next();
-  } catch (err) {
-    next(err);
+    try {
+      await Blog.deleteMany({ author: doc._id }).exec();
+      next();
+    } catch (err) {
+      next(err);
+    }
   }
-});
+);
 
 module.exports = mongoose.model("Author", authorSchema);

@@ -15,21 +15,25 @@ const commentSchema = new mongoose.Schema({
   },
 });
 
-commentSchema.post("remove", async function (next) {
-  const Blog = require("./blog");
-  const User = require("./user");
+commentSchema.post(
+  "deleteOne",
+  { document: true, query: false },
+  async function (doc, next) {
+    const Blog = require("./blog");
+    const User = require("./user");
 
-  try {
-    await Blog.findByIdAndUpdate(this.blog, {
-      $pull: { comments: this._id },
-    }).exec();
-    await User.findByIdAndUpdate(this.user, {
-      $pull: { comments: this._id },
-    }).exec();
-    next();
-  } catch (err) {
-    next(err);
+    try {
+      await Blog.findByIdAndUpdate(doc.blog, {
+        $pull: { comments: doc._id },
+      }).exec();
+      await User.findByIdAndUpdate(doc.user, {
+        $pull: { comments: doc._id },
+      }).exec();
+      next();
+    } catch (err) {
+      next(err);
+    }
   }
-});
+);
 
 module.exports = mongoose.model("Comment", commentSchema);
