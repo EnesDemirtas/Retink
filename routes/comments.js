@@ -133,6 +133,7 @@
 
 const express = require("express");
 const router = express.Router();
+const { validationResult } = require("express-validator");
 const Comment = require("../models/comment");
 const Blog = require("../models/blog");
 const User = require("../models/user");
